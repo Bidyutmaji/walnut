@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walnut</title>
+   
+</head>
+<body>
+
+    <h1>Calculate My Age</h1>
+    <br>
+    <form id='rk' action='/age/'  method="post">
+        {% csrf_token %}
+        <input type="number" placeholder="Day" max="31" maxlength="2" name="day">
+        <input type="number" placeholder="Month" max="12" maxlength="2" name="month">
+        <input type="number" placeholder="Year"max="2022" maxlength="4" name="year">
+        <input type="submit" value="My Age" >
+    </form>
+
+    <br>
+    <h3 id="gn"></h3>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        var rk = $('#rk')
+        rk.submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                type: rk.attr('method'),
+                url: rk.attr('action'),
+                data: rk.serialize(),
+                dataType: "json",
+                success: function(responce){
+                    $('#gn').text('My age is : '+responce+' years.')
+                }
+            })
+        })
+    </script>
+
+</body>
+</html>
