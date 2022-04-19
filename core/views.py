@@ -15,6 +15,7 @@ class Age:
     def calculate(self):
         today = datetime.date.today()
         dob = datetime.date(self.y, self.m, self.d)
+
         age = int((today-dob).days / 365.25)
         return age
 
@@ -23,14 +24,26 @@ class Age:
 class AgeView(APIView):
 
     def post(self, request, format=None):
-        day = request.data['day']
-        month = request.data['month']
-        year = request.data['year']
+        day = int(request.data['day'])
+        month = int(request.data['month'])
+        year = int(request.data['year'])
 
-        age = Age(year, month, day)
-        age = age.calculate()
+        # age = Age(year, month, day)
+        # age = age.calculate()
+        today = datetime.date.today()
+        try:
+            dob = datetime.date(year, month, day)
+            age = int((today-dob).days / 365.25)
+            return Response(age)
 
-        return Response(age)
+        except ValueError:
+            error = "please enter your DOB correctly."
+
+            return Response(error)
+            
+
+        
+        
 
 def home(request):
     return render(request, 'core/index.html')
